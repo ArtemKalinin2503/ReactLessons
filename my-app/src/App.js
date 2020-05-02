@@ -1,22 +1,25 @@
 import React, {Component} from 'react';
-import './App.css';
+import './App.scss';
 import News from "./components/News/News";
 
 class App extends Component {
 
     //State
-        state = {
-            pageTitle: 'Title page of React',
-            news: [
-                {
-                    title: 'News 1',
-                    description: 'Description news 1'
-                },
-                {
-                    title: 'News 2',
-                    description: 'Description news 2'
-                }
-            ],
+        constructor(props) {
+            super(props);
+            this.state = {
+                pageTitle: 'Title page of React',
+                news: [
+                    {
+                        title: 'News 1',
+                        description: 'Description news 1'
+                    },
+                    {
+                        title: 'News 2',
+                        description: 'Description news 2'
+                    }
+                ],
+            }
         }
 
     //Methods
@@ -54,6 +57,11 @@ class App extends Component {
             })
         };
 
+    //componentDidMount - сработает после render компонента
+    componentDidMount() {
+        console.log('componentDidMount')
+    }
+
     render() {
         return (
             <div className="App">
@@ -67,6 +75,7 @@ class App extends Component {
                         return (
                             <News
                                 key={index}
+                                index={index}
                                 title={itemNews.title}
                                 descriptions={itemNews.description}
                                 changeTitleNews={event => this.handleChangeTitleNews(event.target.value, index)} //Передаем метод в качестве props (так как input находиться в компненте News)

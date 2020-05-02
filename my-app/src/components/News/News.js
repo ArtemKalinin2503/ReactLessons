@@ -1,11 +1,16 @@
 import React, {Component} from 'react';
 import './News.scss'; //Подключаем стили (npm install node-sass)
+import PropTypes from 'prop-types'; //npm install prop-types
 
 class News extends Component {
 
     //State
-    state = {
-        showFull: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            showFull: false
+        }
+        this.btnShowFullNews = React.createRef(); {/*Создание ref*/}
     }
 
     //Methods
@@ -14,6 +19,18 @@ class News extends Component {
             showFull: !this.state.showFull
         })
     };
+
+    //Сработает после render компонента
+    componentDidMount() {
+        if (this.props.index === 0) { //Проверка на index - чтобы указать на какой элемент приминить класс
+            this.btnShowFullNews.current.classList.add('active') //Через ref получили ссылку на элемент
+        }
+    };
+
+    //componentWillUnmount - срабоатет после удаления компонента
+    componentWillUnmount() {
+        console.log('componentWillUnmount')
+    }
 
     render() {
         return (
@@ -26,7 +43,7 @@ class News extends Component {
                        value={this.props.title}
                        className={this.state.showFull ? 'input green' : 'input red'} /*Динамический класс*/
                 />
-                <button onClick={this.showFullNews}>Show full news</button>
+                <button onClick={this.showFullNews}  ref={this.btnShowFullNews}>Show full news</button> {/*указываем ref*/}
                 {/*Показываем блок по условию*/}
                 {this.state.showFull ?
                     <div className='news__description'>
@@ -38,6 +55,15 @@ class News extends Component {
             </div>
         )
     }
+}
+
+//Валидируем значения которые ожидаем в качестве Props (как TypeScript)
+News.propTypes = {
+    index: PropTypes.number,
+    title: PropTypes.string,
+    descriptions: PropTypes.string,
+    changeTitleNews: PropTypes.func,
+    onDelete: PropTypes.func,
 }
 
 export default News;
