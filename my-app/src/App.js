@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import './App.css';
-import Car from './components/Car/Car';
 import News from "./components/News/News";
 
 class App extends Component {
@@ -28,11 +27,8 @@ class App extends Component {
                 pageTitle: 'Change Page Title React'
             });
         };
-        //Обработка клика по кнопке внутри компонента News
-        handlerChangeTitleNews = () => {
-            console.log('!!!!!')
-        };
-        //Поле изменение заголовка
+
+        //Поле изменение заголовка страницы из input
         handleInput = (event) => {
             //Метод изменение state
             this.setState({
@@ -40,15 +36,29 @@ class App extends Component {
             })
         };
 
+        //Изменение заголовка новости
+        handleChangeTitleNews = (value, index) => {
+            let newsArr = [...this.state.news]; //Копируем массив из state news (потому что нельзя напрямую изменять state)
+            newsArr[index].title = value; //У копии массива изменениям поле title (index - нужен чтобы детектить какую новость изменять)
+            this.setState({ //И в конце перезапишем state news на новый измененный массив
+                news: newsArr
+            })
+        };
+
+        //Удаление новости
+        handleDeleteNews = (index) => {
+            let newsArr = [...this.state.news]; //Копируем массив state news (так как нельзя изменять state еа прямую)
+            newsArr.splice(index, 1); //Удаляем новость с помощью метода splice (принимает два параметра - первый это Index элемента который удаляем и вторым количество элементов)
+            this.setState({ //Перезапишем state news в новый массив
+                news: newsArr
+            })
+        };
+
     render() {
-        const divStyle = {
-            'color': 'red'
-        }
         return (
             <div className="App">
-                <div style={divStyle}>
+                <div>
                     <p style={{fontSize: 20}}>HELLO</p>
-                    <Car name={'BMW'} year={2019}/> {/*Передача параметров*/}
                     <h1>{this.state.pageTitle}</h1>
                     <input type='text' onChange={this.handleInput}/>
                     <button onClick={this.handlerChangeTitle}>Change title Page</button> {/*Вещаем обработчик событий*/}
@@ -59,7 +69,8 @@ class App extends Component {
                                 key={index}
                                 title={itemNews.title}
                                 descriptions={itemNews.description}
-                                onChangeTitleNews={this.handlerChangeTitleNews.bind(this)} //Передаем метод в качестве props
+                                changeTitleNews={event => this.handleChangeTitleNews(event.target.value, index)} //Передаем метод в качестве props (так как input находиться в компненте News)
+                                onDelete={this.handleDeleteNews.bind(this,index)}
                             />
                         )
                     })}
