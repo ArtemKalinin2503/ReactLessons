@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import './App.scss';
 import News from "./components/News/News";
 import Layout from './components/Layout/Layout';
+import About from './components/About/About';
+import {Route, NavLink} from 'react-router-dom';
 
 class App extends Component {
 
@@ -66,11 +68,30 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <div>
-                    <p style={{fontSize: 20}}>HELLO</p>
+                <nav>
+                    <ul>
+                        <li>
+                            <NavLink to='/' activeClassName={'nav-link_active'}>Home</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/news' activeClassName={'nav-link_active'}>News</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/layout' activeClassName={'nav-link_active'}>Layout</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/about' activeClassName={'nav-link_active'}>About</NavLink>
+                        </li>
+                    </ul>
+                </nav>
+                {/*Компонент с Заголовоком*/}
+                <Route path="/" exact>
                     <h1>{this.state.pageTitle}</h1>
                     <input type='text' onChange={this.handleInput}/>
                     <button onClick={this.handlerChangeTitle}>Change title Page</button> {/*Вещаем обработчик событий*/}
+                </Route>
+                {/*Компонент с Новостями*/}
+                <Route path="/news">
                     {/*Вывод компонента динамически*/}
                     {this.state.news.map((itemNews, index) => {
                         return (
@@ -84,10 +105,11 @@ class App extends Component {
                             />
                         )
                     })}
-                </div>
-                <div className='layuot__component'>
-                    <Layout/>
-                </div>
+                </Route>
+                {/*Компонент с Вопросами*/}
+                <Route path="/layout" component={Layout} />
+                {/*Компонент с Информацией*/}
+                <Route path="/about" component={About} />
             </div>
         );
     }
