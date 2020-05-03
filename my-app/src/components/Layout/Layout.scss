@@ -1,0 +1,12 @@
+.layuot {
+  &__wrapper {
+    background: #6b61d4;
+    max-width: 1200px;
+    margin: auto;
+    border-radius: 5px;
+    padding: 20px;
+  }
+  &__title {
+    color: white;
+  }
+}

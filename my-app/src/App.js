@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './App.scss';
 import News from "./components/News/News";
+import Layout from './components/Layout/Layout';
 
 class App extends Component {
 
@@ -83,6 +84,9 @@ class App extends Component {
                             />
                         )
                     })}
+                </div>
+                <div className='layuot__component'>
+                    <Layout/>
                 </div>
             </div>
         );
