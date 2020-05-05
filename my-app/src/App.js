@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
+import { Route,Switch,NavLink } from 'react-router-dom';
 import './App.scss';
 import News from "./components/News/News";
 import Layout from './components/Layout/Layout';
 import About from './components/About/About';
-import {Route, NavLink} from 'react-router-dom';
+import Authorization from './components/Authorization/Authorization';
+import NewsDetail from "./components/NewsDetail/NewsDetail";
+import TodoList from "./components/TodoList/TodoList";
 
 class App extends Component {
 
@@ -14,14 +17,15 @@ class App extends Component {
                 pageTitle: 'Title page of React',
                 news: [
                     {
-                        title: 'News 1',
+                        title: 'News1',
                         description: 'Description news 1'
                     },
                     {
-                        title: 'News 2',
+                        title: 'News2',
                         description: 'Description news 2'
                     }
                 ],
+                isLogin: false
             }
         }
 
@@ -65,6 +69,13 @@ class App extends Component {
         console.log('componentDidMount')
     }
 
+    //Клик по кнопке Login
+    handlerLogin = () => {
+      this.setState({
+          isLogin: !this.state.isLogin
+      })
+    };
+
     render() {
         return (
             <div className="App">
@@ -82,34 +93,56 @@ class App extends Component {
                         <li>
                             <NavLink to='/about' activeClassName={'nav-link_active'}>About</NavLink>
                         </li>
+                        <li>
+                            <NavLink to='/authorization' activeClassName={'nav-link_active'}>Authorization</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/todo' activeClassName={'nav-link_active'}>Todo</NavLink>
+                        </li>
+                        <li>
+                            <p>Login: {this.state.isLogin ? "TRUE" : "FALSE"}</p>
+                            <button onClick={this.handlerLogin}>Login</button>
+                        </li>
                     </ul>
                 </nav>
-                {/*Компонент с Заголовоком*/}
-                <Route path="/" exact>
-                    <h1>{this.state.pageTitle}</h1>
-                    <input type='text' onChange={this.handleInput}/>
-                    <button onClick={this.handlerChangeTitle}>Change title Page</button> {/*Вещаем обработчик событий*/}
-                </Route>
-                {/*Компонент с Новостями*/}
-                <Route path="/news">
-                    {/*Вывод компонента динамически*/}
-                    {this.state.news.map((itemNews, index) => {
-                        return (
-                            <News
-                                key={index}
-                                index={index}
-                                title={itemNews.title}
-                                descriptions={itemNews.description}
-                                changeTitleNews={event => this.handleChangeTitleNews(event.target.value, index)} //Передаем метод в качестве props (так как input находиться в компненте News)
-                                onDelete={this.handleDeleteNews.bind(this,index)}
-                            />
-                        )
-                    })}
-                </Route>
-                {/*Компонент с Вопросами*/}
-                <Route path="/layout" component={Layout} />
-                {/*Компонент с Информацией*/}
-                <Route path="/about" component={About} />
+                {/*Компонент с Заголовком*/}
+                <Switch>
+                    <Route path="/" exact>
+                        <h1>{this.state.pageTitle}</h1>
+                        <input type='text' onChange={this.handleInput}/>
+                        <button onClick={this.handlerChangeTitle}>Change title Page</button> {/*Вещаем обработчик событий*/}
+                    </Route>
+                    {/*Компонент с Новостями*/}
+                    <Route exact path="/news">
+                        {/*Вывод компонента динамически*/}
+                        {this.state.news.map((itemNews, index) => {
+                            return (
+                                <News
+                                    key={index}
+                                    index={index}
+                                    title={itemNews.title}
+                                    descriptions={itemNews.description}
+                                    changeTitleNews={event => this.handleChangeTitleNews(event.target.value, index)} //Передаем метод в качестве props (так как input находиться в компненте News)
+                                    onDelete={this.handleDeleteNews.bind(this,index)}
+                                />
+                            )
+                        })}
+                    </Route>
+                    <Route exact path="/news/:title" component={NewsDetail}/> {/*Роутинг до выбранной новости - в title попадет заголовок новости на основании props переданного в компонент News выше*/}
+                    {/*Компонент с Вопросами*/}
+                    <Route exact path="/layout" component={Layout} />
+                    {/*Компонент с Информацией - вывод по условию*/}
+                    {this.state.isLogin ?
+                        <Route exact path="/about" component={About} />
+                        : null
+                    }
+                    {/*Компонент Авторизации*/}
+                    <Route exact path={"/authorization"} component={Authorization}/>
+                    {/*Компонент с Задачами*/}
+                    <Route exact path={"/todo"} component={TodoList}/>
+                    {/*404*/}
+                    <Route exact render={() => <h1>404 not found</h1>}/>
+                </Switch>
             </div>
         );
     }

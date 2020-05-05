@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import './News.scss'; //Подключаем стили (npm install node-sass)
 import PropTypes from 'prop-types'; //npm install prop-types
+import {withRouter} from 'react-router-dom';
 
 class News extends Component {
 
@@ -35,7 +36,7 @@ class News extends Component {
     render() {
         return (
             <div className='news-wrapper'>
-                <h3>{this.props.title}</h3> {/**Принимает переадныне props */}
+                <h3>{this.props.title}</h3> {/*Принимает переадныне props*/}
                 <p>{this.props.descriptions}</p>
                 {/*Принимаем метод в качестве props */}
                 <input type='text'
@@ -51,6 +52,7 @@ class News extends Component {
                         <p>Lorem Ipsum является стандартной "рыбой" для текстов на латинице с начала XVI века.</p>
                     </div> : null
                 }
+                <span onClick={()=> this.props.history.push('/news/' + this.props.title.toLowerCase())}>Просмотреть новость</span>
                 <button onClick={this.props.onDelete}>Delete news</button>
             </div>
         )
@@ -66,4 +68,4 @@ News.propTypes = {
     onDelete: PropTypes.func,
 }
 
-export default News;
+export default withRouter(News);
