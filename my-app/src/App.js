@@ -7,6 +7,8 @@ import About from './components/About/About';
 import Authorization from './components/Authorization/Authorization';
 import NewsDetail from "./components/NewsDetail/NewsDetail";
 import TodoList from "./components/TodoList/TodoList";
+import ReduxCount from "./components/ReduxCount/ReduxCount";
+import ReduxCount2 from "./components/ReduxCount2/ReduxCount2";
 
 class App extends Component {
 
@@ -100,6 +102,12 @@ class App extends Component {
                             <NavLink to='/todo' activeClassName={'nav-link_active'}>Todo</NavLink>
                         </li>
                         <li>
+                            <NavLink to='/reduxCount' activeClassName={'nav-link_active'}>ReduxCount</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to='/reduxCount2' activeClassName={'nav-link_active'}>ReduxCount2</NavLink>
+                        </li>
+                        <li>
                             <p>Login: {this.state.isLogin ? "TRUE" : "FALSE"}</p>
                             <button onClick={this.handlerLogin}>Login</button>
                         </li>
@@ -140,6 +148,10 @@ class App extends Component {
                     <Route exact path={"/authorization"} component={Authorization}/>
                     {/*Компонент с Задачами*/}
                     <Route exact path={"/todo"} component={TodoList}/>
+                    {/*Компонент с подключенным Redux*/}
+                    <Route exact path={"/reduxCount"} component={ReduxCount}/>
+                    {/*Компонент с подключенным Redux*/}
+                    <Route exact path={"/reduxCount2"} component={ReduxCount2}/>
                     {/*404*/}
                     <Route exact render={() => <h1>404 not found</h1>}/>
                 </Switch>
